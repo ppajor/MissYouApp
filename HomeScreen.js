@@ -1,7 +1,7 @@
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
-import { Text, View, Button, Platform, Image } from "react-native";
+import { Text, View, Button, Platform, Image, StyleSheet } from "react-native";
 import Screen from "./Screen";
 
 import firebase from "firebase";
@@ -14,9 +14,7 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import SideMenu from "react-native-side-menu";
 import Sidebar from "./Sidebar";
-
-import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
+import DefText from "./DefText";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -35,6 +33,7 @@ export default function HomeScreen(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
+    console.log("AKTYWNY USER:" + firebase.auth().currentUser.uid);
     registerForPushNotificationsAsync().then((token) => {
       setExpoPushToken(token);
       console.log("Token:" + token);
@@ -68,7 +67,9 @@ export default function HomeScreen(props) {
 
     //  let user = firebase.auth().currentUser;
     // console.log(user.uid);
+  }, []);
 
+  useEffect(() => {
     notificationListener.current = Notifications.addNotificationReceivedListener(
       (notification) => {
         setNotification(notification);
@@ -94,59 +95,43 @@ export default function HomeScreen(props) {
   };
 
   const menu = <Sidebar />;
-  let [fontsLoaded] = useFonts({
-    //using google fonts
-    "GreatVibes-Regular": require("./assets/fonts/GreatVibes-Regular.ttf"),
-  });
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else {
-    return (
-      <SideMenu
-        menu={menu}
-        isOpen={isOpen}
-        onChange={(isOpen) => updateMenuState(isOpen)}
-      >
-        <Screen>
+
+  return (
+    <SideMenu
+      menu={menu}
+      isOpen={isOpen}
+      onChange={(isOpen) => updateMenuState(isOpen)}
+    >
+      <Screen>
+        <TouchableOpacity
+          style={{ left: "5%", marginTop: "5%" }}
+          onPress={() => {
+            setIsOpen(true);
+          }}
+        >
+          <FontAwesome name="bars" size={24} color={global.secondaryColor} />
+        </TouchableOpacity>
+        <View style={styles.daysToMeetContainer}>
+          <DefText size={92}>2</DefText>
+          <DefText>dni do następnego spotkania</DefText>
+        </View>
+
+        <View style={styles.heartContainer}>
+          <DefText center family="Roboto-LightItalic">
+            Pokaż swojej drugiej połówce jak bardzo tęsknisz
+          </DefText>
           <TouchableOpacity
-            style={{ left: "5%", marginTop: "5%" }}
-            onPress={() => {
-              setIsOpen(true);
+            onPress={async () => {
+              await schedulePushNotification();
             }}
+            style={{ marginTop: 25 }}
           >
-            <FontAwesome name="bars" size={24} color={global.secondaryColor} />
+            <Image source={require("./assets/heart-medium.png")} />
           </TouchableOpacity>
-          <View
-            style={{
-              flex: 1,
-              alignItems: "center",
-              height: "100%",
-              backgroundColor: global.primaryColor,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 18,
-                color: global.secondaryColor,
-                padding: "10%",
-                marginTop: "7%",
-                textAlign: "center",
-              }}
-            >
-              Pokaż swojej drugiej połówce jak bardzo tęsknisz
-            </Text>
-            <TouchableOpacity
-              onPress={async () => {
-                await schedulePushNotification();
-              }}
-            >
-              <Image source={require("./assets/heart.png")} />
-            </TouchableOpacity>
-          </View>
-        </Screen>
-      </SideMenu>
-    );
-  }
+        </View>
+      </Screen>
+    </SideMenu>
+  );
 }
 
 async function schedulePushNotification() {
@@ -166,7 +151,7 @@ async function schedulePushNotification() {
     .once("value")
     .then((snapshot) => {
       let data = snapshot.val(); // co zrobic gdy uzytkownik nie ma nic w czytanych i jest null??
-      console.log(data.partnerToken);
+      console.log("partner token from database:" + data.partnerToken);
       let token = data.partnerToken;
       const message = {
         to: token,
@@ -207,7 +192,7 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    console.log("TOKENIK:" + token);
   } else {
     alert("Must use physical device for Push Notifications");
   }
@@ -221,5 +206,25 @@ async function registerForPushNotificationsAsync() {
     });
   }
 
+  console.log("TOKENIK WCZESNIEJSZY: " + token);
   return token;
 }
+
+const styles = StyleSheet.create({
+  daysToMeetContainer: {
+    display: "flex",
+    alignItems: "center",
+    marginTop: "11%",
+    marginBottom: "11%",
+  },
+  heartContainer: {
+    alignItems: "center",
+    width: "85%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    padding: 25,
+
+    backgroundColor: "#1F1E1E",
+    borderRadius: 25,
+  },
+});

@@ -5,7 +5,9 @@ import AppLoading from "expo-app-loading";
 
 import global from "./style";
 
-function Option({ name, partnerUsername, handlePartnerUsername }) {
+function Option(props) {
+  const { name, partnerUsername, handlePartnerUsername } = props;
+
   let [fontsLoaded] = useFonts({
     "GreatVibes-Regular": require("./assets/fonts/GreatVibes-Regular.ttf"),
   });
@@ -17,11 +19,7 @@ function Option({ name, partnerUsername, handlePartnerUsername }) {
         <Text style={[styles.textHeader, { fontFamily: "GreatVibes-Regular" }]}>
           {name}
         </Text>
-        <TextInput
-          style={styles.input}
-          value={partnerUsername}
-          onChangeText={handlePartnerUsername}
-        />
+        {props.children}
       </View>
     );
   }
@@ -39,16 +37,5 @@ const styles = StyleSheet.create({
     color: global.secondaryColor,
     fontSize: 32,
     marginBottom: "10%",
-  },
-  input: {
-    width: "75%",
-    height: 40,
-    color: global.secondaryColor,
-    fontSize: 16,
-    padding: 8,
-    marginBottom: "10%",
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: global.secondaryColor,
   },
 });

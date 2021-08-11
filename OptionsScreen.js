@@ -12,6 +12,7 @@ import Screen from "./Screen";
 import Option from "./Option";
 import global from "./style";
 import firebase from "firebase";
+import DefBtn from "./DefBtn";
 
 function OptionsScreen(props) {
   const [partnerUsername, setPartnerUsername] = useState("");
@@ -75,15 +76,22 @@ function OptionsScreen(props) {
             Options
           </Text>
         </View>
+        <View style={{ flex: 1 }}>
+          <Option name={"Partner username"}>
+            <TextInput
+              style={styles.input}
+              value={partnerUsername}
+              onChangeText={(e) => setPartnerUsername(e)}
+            />
+          </Option>
 
-        <Option
-          name={"Partner username"}
-          partnerUsername={partnerUsername}
-          handlePartnerUsername={(e) => setPartnerUsername(e)}
-        />
-        <TouchableHighlight onPress={() => handleSaveOptions()}>
-          <Image source={require("./assets/arrowRight.png")} />
-        </TouchableHighlight>
+          <TouchableHighlight
+            style={{ width: "100%", position: "absolute", bottom: "5%" }}
+            onPress={() => handleSaveOptions()}
+          >
+            <DefBtn value="Zapisz" />
+          </TouchableHighlight>
+        </View>
       </View>
     </Screen>
   );
@@ -93,6 +101,20 @@ export default OptionsScreen;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    borderWidth: 4,
+    borderColor: global.primaryColor,
     backgroundColor: global.primaryColor,
+  },
+  input: {
+    width: "75%",
+    height: 40,
+    color: global.secondaryColor,
+    fontSize: 16,
+    padding: 8,
+    marginBottom: "10%",
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: global.secondaryColor,
   },
 });

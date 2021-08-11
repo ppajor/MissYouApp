@@ -18,6 +18,7 @@ function SetPartnerUsername(props) {
     "Your partner username..."
   );
   const [username, setUsername] = useState("");
+  const [partnerT, setPartnerT] = useState("");
 
   useEffect(() => {
     console.log(
@@ -43,15 +44,21 @@ function SetPartnerUsername(props) {
   }, []);
 
   const handleOnPress = () => {
+    console.log("Partner username to find: " + partnerUsername);
     const ref = firebase.database().ref();
-    let partnerToken;
+    var partnerToken;
     ref.child("usernames/" + partnerUsername).once("value", (snapshot) => {
+      // jesli partner istnieje to wez jego token
       if (snapshot.exists()) {
         let data = snapshot.val();
         partnerToken = data.token;
+        console.log("partner inner:" + partnerToken);
+        setPartnerT(partnerToken);
       }
-      console.log("partner:" + partnerToken);
+      console.log("partner outer:" + partnerToken);
     });
+
+    console.log("partner outer2: " + partnerT);
 
     firebase
       .auth()
@@ -66,7 +73,7 @@ function SetPartnerUsername(props) {
             name: props.location.state.name,
             username: username,
             partnerUsername: partnerUsername,
-            partnerToken: partnerToken,
+            // partnerToken: partnerToken,
           })
           .then(() => {
             console.log("Data updated. and: username is: " + username);
@@ -104,7 +111,10 @@ function SetPartnerUsername(props) {
         <TextInput
           style={styles.input}
           value={partnerUsername}
-          onChangeText={(e) => setPartnerUsername(e)}
+          onChangeText={(e) => {
+            console.log("set partner username e:" + e);
+            setPartnerUsername(e);
+          }}
         />
         <TouchableHighlight onPress={() => handleOnPress()}>
           <Image source={require("./assets/arrowRight.png")} />
