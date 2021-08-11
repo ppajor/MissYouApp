@@ -18,7 +18,7 @@ function SetPartnerUsername(props) {
     "Your partner username..."
   );
   const [username, setUsername] = useState("");
-  const [partnerT, setPartnerT] = useState("");
+  const [partnerUsernameError, setPartnerUsernameError] = useState(false);
 
   useEffect(() => {
     console.log(
@@ -52,49 +52,51 @@ function SetPartnerUsername(props) {
       if (snapshot.exists()) {
         let data = snapshot.val();
         partnerToken = data.token;
-        console.log("partner inner:" + partnerToken);
-        setPartnerT(partnerToken);
+        saveUserToDb(partnerToken);
+      } else {
+        setPartnerUsernameError(true);
+        error = true;
       }
-      console.log("partner outer:" + partnerToken);
     });
 
-    console.log("partner outer2: " + partnerT);
+    function saveUserToDb(partnerToken) {
+      firebase
+        .auth()
+        .signInAnonymously()
+        .then(() => {
+          console.log("User signed in anonymously");
 
-    firebase
-      .auth()
-      .signInAnonymously()
-      .then(() => {
-        console.log("User signed in anonymously");
-        firebase
-          .database()
-          .ref("/users/" + firebase.auth().currentUser.uid)
-          .update({
-            id: firebase.auth().currentUser.uid,
-            name: props.location.state.name,
-            username: username,
-            partnerUsername: partnerUsername,
-            // partnerToken: partnerToken,
-          })
-          .then(() => {
-            console.log("Data updated. and: username is: " + username);
-            props.history.push({
-              pathname: "/HomeScreen",
-              state: {
-                username: username,
-              },
+          firebase
+            .database()
+            .ref("/users/" + firebase.auth().currentUser.uid)
+            .update({
+              id: firebase.auth().currentUser.uid,
+              name: props.location.state.name,
+              username: username,
+              partnerUsername: partnerUsername,
+              partnerToken: partnerToken,
+            })
+            .then(() => {
+              console.log("Data updated. and: username is: " + username);
+              props.history.push({
+                pathname: "/HomeScreen",
+                state: {
+                  username: username,
+                },
+              });
+            })
+            .catch((error) => {
+              console.error(error);
             });
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      })
-      .catch((error) => {
-        if (error.code === "auth/operation-not-allowed") {
-          console.log("Enable anonymous in your firebase console.");
-        }
+        })
+        .catch((error) => {
+          if (error.code === "auth/operation-not-allowed") {
+            console.log("Enable anonymous in your firebase console.");
+          }
 
-        console.error(error);
-      });
+          console.error(error);
+        });
+    }
   };
 
   let [fontsLoaded] = useFonts({
@@ -112,13 +114,17 @@ function SetPartnerUsername(props) {
           style={styles.input}
           value={partnerUsername}
           onChangeText={(e) => {
-            console.log("set partner username e:" + e);
             setPartnerUsername(e);
           }}
         />
         <TouchableHighlight onPress={() => handleOnPress()}>
           <Image source={require("./assets/arrowRight.png")} />
         </TouchableHighlight>
+        {partnerUsernameError && (
+          <Text style={{ color: "red" }}>
+            Partner username is not valid. Please try again.
+          </Text>
+        )}
       </View>
     );
   }
