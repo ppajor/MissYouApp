@@ -36,7 +36,6 @@ export default function HomeScreen(props) {
     console.log("AKTYWNY USER:" + firebase.auth().currentUser.uid);
     registerForPushNotificationsAsync().then((token) => {
       setExpoPushToken(token);
-      console.log("Token:" + token);
       var username;
       firebase
         .database()
@@ -111,10 +110,6 @@ export default function HomeScreen(props) {
         >
           <FontAwesome name="bars" size={24} color={global.secondaryColor} />
         </TouchableOpacity>
-        <View style={styles.daysToMeetContainer}>
-          <DefText size={92}>2</DefText>
-          <DefText>dni do następnego spotkania</DefText>
-        </View>
 
         <View style={styles.heartContainer}>
           <DefText center family="Roboto-LightItalic">
@@ -192,7 +187,6 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log("TOKENIK:" + token);
   } else {
     alert("Must use physical device for Push Notifications");
   }
@@ -222,6 +216,7 @@ const styles = StyleSheet.create({
     width: "85%",
     marginLeft: "auto",
     marginRight: "auto",
+    marginTop: "25%",
     padding: 25,
 
     backgroundColor: "#1F1E1E",

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "232447084494",
+    "firebase_url": "https://miss-you-app-8659d-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "miss-you-app-8659d",
+    "storage_bucket": "miss-you-app-8659d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232447084494:android:2f9eada54f192683428d9f",
+        "android_client_info": {
+          "package_name": "com.pawelpajor.MissYouApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232447084494-dgaqsa7c412m1acd1el24hr2bm1m0ogu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_iKb0rbqbZVhVrMJV-vERkOXjykLkUQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "232447084494-dgaqsa7c412m1acd1el24hr2bm1m0ogu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
