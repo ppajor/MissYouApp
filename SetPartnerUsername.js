@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   Image,
 } from "react-native";
+import { withRouter, Redirect, useLocation } from "react-router-native";
 import global from "./style";
 import firebase from "firebase";
 import { useFonts } from "expo-font";
@@ -19,6 +20,8 @@ function SetPartnerUsername(props) {
   );
   const [username, setUsername] = useState("");
   const [partnerUsernameError, setPartnerUsernameError] = useState(false);
+  const [partnerToken, setPartnerToken] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     console.log(
@@ -77,13 +80,14 @@ function SetPartnerUsername(props) {
               partnerToken: partnerToken,
             })
             .then(() => {
-              console.log("Data updated. and: username is: " + username);
-              props.history.push({
-                pathname: "/HomeScreen",
-                state: {
-                  username: username,
-                },
-              });
+              console.log(
+                "Data updated. and: username is: " +
+                  username +
+                  "partner topken is:" +
+                  partnerToken
+              );
+              setPartnerToken(partnerToken);
+              //setRedirect(true);
             })
             .catch((error) => {
               console.error(error);
@@ -117,20 +121,25 @@ function SetPartnerUsername(props) {
             setPartnerUsername(e);
           }}
         />
-        <TouchableHighlight onPress={() => handleOnPress()}>
+        <TouchableHighlight onPress={(e) => handleOnPress(e)}>
           <Image source={require("./assets/arrowRight.png")} />
         </TouchableHighlight>
+
         {partnerUsernameError && (
           <Text style={{ color: "red" }}>
             Partner username is not valid. Please try again.
           </Text>
         )}
+        {redirect &&
+          (() => {
+            console.log("USERNAME =>" + username);
+          })}
       </View>
     );
   }
 }
 
-export default SetPartnerUsername;
+export default withRouter(SetPartnerUsername);
 
 const styles = StyleSheet.create({
   container: {

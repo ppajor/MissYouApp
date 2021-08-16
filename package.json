@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@firebase/app": "^0.6.13",
-    "@react-native-community/datetimepicker": "^3.5.2",
+    "@react-native-community/datetimepicker": "3.2.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-firebase/storage": "^12.4.0",
     "@react-navigation/native": "^5.9.4",

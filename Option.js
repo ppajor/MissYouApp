@@ -19,6 +19,7 @@ function Option(props) {
         <Text style={[styles.textHeader, { fontFamily: "GreatVibes-Regular" }]}>
           {name}
         </Text>
+
         {props.children}
       </View>
     );
@@ -31,11 +32,12 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     alignItems: "center",
+    marginBottom: "14%",
   },
 
   textHeader: {
     color: global.secondaryColor,
     fontSize: 32,
-    marginBottom: "10%",
+    marginBottom: "7%",
   },
 });
