@@ -16,10 +16,12 @@ function ReadDays() {
       .ref("/users/" + firebase.auth().currentUser.uid + "/data/")
       .once("value")
       .then((snapshot) => {
-        let data = snapshot.val();
-        setDate(data.date);
-        setLoading(true);
-        setDaysToMeet();
+        if (snapshot.exists()) {
+          let data = snapshot.val();
+          setDate(data.date);
+          setLoading(true);
+          setDaysToMeet();
+        }
       })
       .catch((error) => {
         console.error(error);

@@ -22,7 +22,9 @@ function MissingHeart() {
   const responseListener = useRef();
 
   useEffect(() => {
+    console.log("AKTUALNY USER: " + firebase.auth().currentUser.uid);
     registerForPushNotificationsAsync().then((token) => {
+      console.log("TOKEN FUNCTION");
       setExpoPushToken(token);
       var username;
       firebase
@@ -33,7 +35,7 @@ function MissingHeart() {
           let data = snapshot.val();
 
           username = data.username;
-
+          console.log("username is: " + username);
           firebase
             .database()
             .ref("/usernames/" + username)

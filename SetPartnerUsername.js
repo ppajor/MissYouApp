@@ -15,39 +15,27 @@ import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 
 function SetPartnerUsername(props) {
-  const [partnerUsername, setPartnerUsername] = useState(
-    "Your partner username..."
-  );
+  const [partnerUsername, setPartnerUsername] = useState("");
   const [username, setUsername] = useState("");
   const [partnerUsernameError, setPartnerUsernameError] = useState(false);
   const [partnerToken, setPartnerToken] = useState("");
-  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
-    console.log(
-      "Imie:" +
-        props.location.state.name +
-        "Username:" +
-        props.location.state.username
-    );
     setUsername(props.location.state.username);
-
+    console.log(props.location.state.username);
     const backAction = () => {
       props.history.push("/"); //wracamy do glownej
       return true; //musimy zreturnowac true -> patrz dokumentacja
     };
-
     const backHandler = BackHandler.addEventListener(
       //obsluga hardwarowego back buttona (tylko android)
       "hardwareBackPress",
       backAction
     );
-
     return () => backHandler.remove(); // przy odmontowywaniu
   }, []);
 
   const handleOnPress = () => {
-    console.log("Partner username to find: " + partnerUsername);
     const ref = firebase.database().ref();
     var partnerToken;
     ref.child("usernames/" + partnerUsername).once("value", (snapshot) => {
@@ -86,8 +74,10 @@ function SetPartnerUsername(props) {
                   "partner topken is:" +
                   partnerToken
               );
+              props.history.push({
+                pathname: "/HomeScreen",
+              });
               setPartnerToken(partnerToken);
-              //setRedirect(true);
             })
             .catch((error) => {
               console.error(error);
@@ -97,7 +87,6 @@ function SetPartnerUsername(props) {
           if (error.code === "auth/operation-not-allowed") {
             console.log("Enable anonymous in your firebase console.");
           }
-
           console.error(error);
         });
     }
@@ -117,11 +106,13 @@ function SetPartnerUsername(props) {
         <TextInput
           style={styles.input}
           value={partnerUsername}
+          placeholder="Your partner username..."
+          placeholderTextColor={global.secondaryColor}
           onChangeText={(e) => {
             setPartnerUsername(e);
           }}
         />
-        <TouchableHighlight onPress={(e) => handleOnPress(e)}>
+        <TouchableHighlight onPress={() => handleOnPress()}>
           <Image source={require("./assets/arrowRight.png")} />
         </TouchableHighlight>
 
@@ -130,10 +121,6 @@ function SetPartnerUsername(props) {
             Partner username is not valid. Please try again.
           </Text>
         )}
-        {redirect &&
-          (() => {
-            console.log("USERNAME =>" + username);
-          })}
       </View>
     );
   }

@@ -13,24 +13,35 @@ import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 
 function SetUsername(props) {
-  const [name, setName] = useState("Your name...");
+  const [name, setName] = useState("");
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    console.log("ELO");
-
     const backAction = () => {
       props.history.push("/"); //wracamy do glownej
       return true; //musimy zreturnowac true -> patrz dokumentacja
     };
-
     const backHandler = BackHandler.addEventListener(
       //obsluga hardwarowego back buttona (tylko android)
       "hardwareBackPress",
       backAction
     );
-
     return () => backHandler.remove(); // przy odmontowywaniu
   }, []);
+
+  const handleClick = () => {
+    if (name === "") {
+      console.log("error");
+      setError(true);
+      return;
+    }
+    props.history.push({
+      pathname: "/SetUsername",
+      state: {
+        name: name,
+      },
+    });
+  };
 
   let [fontsLoaded] = useFonts({
     "GreatVibes-Regular": require("./assets/fonts/GreatVibes-Regular.ttf"),
@@ -46,20 +57,14 @@ function SetUsername(props) {
         <TextInput
           style={styles.input}
           value={name}
+          placeholder="Name..."
+          placeholderTextColor={global.secondaryColor}
           onChangeText={(e) => setName(e)}
         />
-        <TouchableHighlight
-          onPress={() =>
-            props.history.push({
-              pathname: "/SetUsername",
-              state: {
-                name: name,
-              },
-            })
-          }
-        >
+        <TouchableHighlight onPress={() => handleClick()}>
           <Image source={require("./assets/arrowRight.png")} />
         </TouchableHighlight>
+        {error && <Text style={{ color: "red" }}>Please enter a name.</Text>}
       </View>
     );
   }
