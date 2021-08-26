@@ -1,11 +1,13 @@
-import Constants from "expo-constants";
-import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
-import LottieView from "lottie-react-native";
+import Constants from "expo-constants";
+import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
+import * as Notifications from "expo-notifications";
 import firebase from "firebase";
-
-import DefText from "./DefText";
+import LottieView from "lottie-react-native";
+import globals from "./style";
+import Screen from "./Screen";
+import DefInput from "./DefInput";
+import DefBtn from "./DefBtn";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -15,45 +17,18 @@ Notifications.setNotificationHandler({
   }),
 });
 
-function MissingHeart() {
+function HumourNotification(props) {
+  const { emojiData } = props;
+  const [inputVal, setInputVal] = useState("");
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
 
   const notificationListener = useRef();
   const responseListener = useRef();
-  let heart = null;
 
   useEffect(() => {
-    console.log("AKTUALNY USER: " + firebase.auth().currentUser.uid);
     registerForPushNotificationsAsync().then((token) => {
-      console.log("TOKEN FUNCTION");
       setExpoPushToken(token);
-      var username;
-      firebase
-        .database()
-        .ref("/users/" + firebase.auth().currentUser.uid)
-        .once("value")
-        .then((snapshot) => {
-          let data = snapshot.val();
-
-          username = data.username;
-          console.log("username is: " + username);
-          firebase
-            .database()
-            .ref("/usernames/" + username)
-            .update({
-              token: token,
-            })
-            .then(() => {
-              // console.log("username  3: " + username);
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
     });
   }, []);
 
@@ -76,42 +51,44 @@ function MissingHeart() {
     };
   }, []);
 
-  const animationPlay = () => {
-    heart.play(0, 30);
+  const handleOnChange = (e) => {
+    setInputVal(e);
   };
 
   return (
-    <View style={styles.heartContainer}>
-      <DefText align="center" family="Roboto-LightItalic">
-        Pokaż swojej drugiej połówce jak bardzo tęsknisz
-      </DefText>
-      <TouchableOpacity
-        onPress={async () => {
-          await schedulePushNotification();
-          animationPlay();
-        }}
-        style={{ marginTop: 25 }}
-      >
+    <Screen>
+      <View style={styles.container}>
         <LottieView
-          ref={(animation) => {
-            heart = animation;
-          }}
           style={{
-            width: 250,
-            height: 250,
-            backgroundColor: "#202020",
+            width: 200,
+            height: 200,
+
+            backgroundColor: "#101010",
           }}
-          source={require("./assets/73495-heart.json")}
-          loop={false}
-          // OR find more Lottie files @ https://lottiefiles.com/featured
-          // Just click the one you like, place that file in the 'assets' folder to the left, and replace the above 'require' statement
+          source={emojiData.emoji}
+          loop
+          autoPlay
         />
-      </TouchableOpacity>
-    </View>
+
+        <DefInput
+          value={inputVal}
+          placeholder="Tell me why you're feeling it..."
+          onChange={handleOnChange}
+        />
+        <TouchableOpacity
+          style={{ width: "100%", marginTop: "10%" }}
+          onPress={async () => {
+            await schedulePushNotification(inputVal, emojiData.emotion);
+          }}
+        >
+          <DefBtn value="Send notification" />
+        </TouchableOpacity>
+      </View>
+    </Screen>
   );
 }
 
-async function schedulePushNotification() {
+async function schedulePushNotification(bodyValue, emotion) {
   firebase
     .database()
     .ref("/users/" + firebase.auth().currentUser.uid)
@@ -123,8 +100,8 @@ async function schedulePushNotification() {
       const message = {
         to: token,
         sound: "default",
-        title: data.name + " bardzo tęskni",
-        body: "Odezwij się do mnie :(",
+        title: "Czuję się " + emotion,
+        body: bodyValue,
         data: { someData: "goes here" },
       };
 
@@ -176,17 +153,25 @@ async function registerForPushNotificationsAsync() {
   return token;
 }
 
-export default MissingHeart;
+export default HumourNotification;
 
 const styles = StyleSheet.create({
-  heartContainer: {
+  container: {
+    flex: 1,
+    padding: 5,
+    display: "flex",
     alignItems: "center",
+    paddingTop: "30%",
+  },
+  input: {
     width: "90%",
-    marginLeft: "auto",
-    marginRight: "auto",
-    padding: 25,
-
-    backgroundColor: "#202020",
-    borderRadius: 25,
+    height: 50,
+    color: globals.secondaryColor,
+    fontSize: 16,
+    padding: 16,
+    marginTop: "15%",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: globals.secondaryColor,
   },
 });

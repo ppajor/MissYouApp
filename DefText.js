@@ -8,7 +8,9 @@ function DefText(props) {
   const {
     family = "Roboto-Regular",
     size = 18,
-    center = false,
+    align = "left",
+    bold = false,
+    color = global.secondaryColor,
     ...rest
   } = props; //definiujemy defaultowe wartosci propsow
 
@@ -27,8 +29,9 @@ function DefText(props) {
         style={{
           fontSize: size,
           fontFamily: family,
-          color: global.secondaryColor,
-          textAlign: center ? "center" : "left", //warunkowe stylowanie
+          color: color,
+          textAlign: align,
+          fontWeight: bold ? "bold" : "400",
         }}
       >
         {props.children}

@@ -13,6 +13,8 @@ import global from "./style";
 import firebase from "firebase";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+import DefInput from "./DefInput";
+import LottieView from "lottie-react-native";
 
 function SetPartnerUsername(props) {
   const [partnerUsername, setPartnerUsername] = useState("");
@@ -103,17 +105,27 @@ function SetPartnerUsername(props) {
         <Text style={[styles.textHeader, { fontFamily: "GreatVibes-Regular" }]}>
           Enter your partner username
         </Text>
-        <TextInput
-          style={styles.input}
+
+        <DefInput
           value={partnerUsername}
           placeholder="Your partner username..."
-          placeholderTextColor={global.secondaryColor}
-          onChangeText={(e) => {
-            setPartnerUsername(e);
-          }}
+          onChange={(e) => setPartnerUsername(e)}
         />
-        <TouchableHighlight onPress={() => handleOnPress()}>
-          <Image source={require("./assets/arrowRight.png")} />
+        <TouchableHighlight
+          style={styles.nextIcon}
+          onPress={() => handleOnPress()}
+        >
+          <LottieView
+            style={{
+              width: 50,
+              height: 50,
+
+              backgroundColor: "#101010",
+            }}
+            source={require("./assets/right_arrow")}
+            loop
+            autoPlay
+          />
         </TouchableHighlight>
 
         {partnerUsernameError && (
@@ -132,25 +144,19 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     alignItems: "center",
-    paddingTop: "59%",
+    justifyContent: "center",
     height: "100%",
     backgroundColor: global.primaryColor,
   },
   textHeader: {
     color: global.secondaryColor,
     fontSize: 48,
-    marginBottom: "10%",
     textAlign: "center",
   },
-  input: {
-    width: "75%",
-    height: 60,
-    color: global.secondaryColor,
-    fontSize: 18,
-    padding: 16,
-    marginBottom: "45%",
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: global.secondaryColor,
+  nextIcon: {
+    position: "absolute",
+    bottom: "10%",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 });

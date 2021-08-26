@@ -5,7 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "dev-tools": "react-devtools"
   },
   "dependencies": {
     "@firebase/app": "^0.6.13",
@@ -17,9 +18,13 @@
     "expo": "~41.0.1",
     "expo-app-loading": "^1.0.3",
     "expo-font": "~9.1.0",
+    "expo-image-picker": "~10.1.4",
+    "expo-image-picker-multiple": "^1.4.1",
+    "expo-images-picker": "^2.0.1",
     "expo-notifications": "~0.11.6",
     "expo-status-bar": "~1.0.4",
     "firebase": "8.2.3",
+    "lottie-react-native": "3.5.0",
     "mini-create-react-context": "^0.4.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",

@@ -33,8 +33,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/MissYouAppLogo.png",
+        "backgroundColor": "#101010"
       },
       "package": "com.pawelpajor.MissYouApp",
       "googleServicesFile": "./google-services.json"

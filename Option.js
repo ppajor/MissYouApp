@@ -16,11 +16,17 @@ function Option(props) {
   } else {
     return (
       <View style={styles.container}>
-        <Text style={[styles.textHeader, { fontFamily: "GreatVibes-Regular" }]}>
-          {name}
-        </Text>
-
-        {props.children}
+        <Text style={[styles.textHeader]}>{name}</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {props.children}
+        </View>
       </View>
     );
   }
@@ -37,7 +43,7 @@ const styles = StyleSheet.create({
 
   textHeader: {
     color: global.secondaryColor,
-    fontSize: 32,
+    fontSize: 24,
     marginBottom: "7%",
   },
 });

@@ -15,4 +15,4 @@ const countDays = (
   return diffDays;
 };
 
-export default countDays;
+export { countDays };

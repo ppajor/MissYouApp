@@ -19,6 +19,10 @@ import StarterScreen from "./StarterScreen";
 import HomeScreen from "./HomeScreen";
 import LoadingScreen from "./LoadingScreen";
 import OptionsScreen from "./OptionsScreen";
+import Gallery from "./Gallery";
+import AddAlbum from "./AddAlbum";
+import ImageBrowserScreen from "./ImageBrowserScreen";
+import HumourDetector from "./HumourDetector";
 
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig); //musimy sprawdzic czy aplikacja zostala juz zainicjowana czy nie, zeby za kazdym razem nie inicjowac apki
 
@@ -37,6 +41,14 @@ export default function App() {
         />
         <Route exact path="/HomeScreen" component={HomeScreen} />
         <Route exact path="/OptionsScreen" component={OptionsScreen} />
+        <Route exact path="/Gallery" component={Gallery} />
+        <Route exact path="/AddAlbum" component={AddAlbum} />
+        <Route
+          exact
+          path="/ImageBrowserScreen"
+          component={ImageBrowserScreen}
+        />
+        <Route exact path="/HumourDetector" component={HumourDetector} />
       </Switch>
     </MemoryRouter>
   );

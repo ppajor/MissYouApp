@@ -6,7 +6,9 @@ import global from "./style";
 
 import { withRouter } from "react-router-native";
 import { useFonts } from "expo-font";
+import { FontAwesome } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
+import DefText from "./DefText";
 
 function Sidebar(props) {
   const handleSignOut = () => {
@@ -36,26 +38,35 @@ function Sidebar(props) {
             backgroundColor: "#202020",
           }}
         >
-          <Text
+          <View
             style={{
-              fontFamily: "GreatVibes-Regular",
-              fontSize: 36,
-              color: global.secondaryColor,
+              display: "flex",
+              flexDirection: "row",
               marginBottom: "15%",
               marginTop: "5%",
             }}
           >
-            MissYouApp
-          </Text>
-          <TouchableOpacity
-            onPress={() => props.history.push("/OptionsScreen")}
-          >
-            <Text style={styles.li}>PROFILE</Text>
+            <DefText family="GreatVibes-Regular" size={36}>
+              MissYouApp
+            </DefText>
+            <FontAwesome name="heart" size={18} color="#ff006d" />
+          </View>
+
+          <TouchableOpacity onPress={() => props.history.push("/HomeScreen")}>
+            <Text style={styles.li}>HOME</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => props.history.push("/OptionsScreen")}
           >
             <Text style={styles.li}>OPTIONS</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => props.history.push("/Gallery")}>
+            <Text style={styles.li}>GALLERY</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.history.push("/HumourDetector")}
+          >
+            <Text style={styles.li}>HUMOUR DETECTOR</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleSignOut}>
             <Text style={styles.li}>WYLOGUJ</Text>

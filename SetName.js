@@ -11,6 +11,8 @@ import {
 import global from "./style";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+import DefInput from "./DefInput";
+import LottieView from "lottie-react-native";
 
 function SetUsername(props) {
   const [name, setName] = useState("");
@@ -54,15 +56,28 @@ function SetUsername(props) {
         <Text style={[styles.textHeader, { fontFamily: "GreatVibes-Regular" }]}>
           Enter your name
         </Text>
-        <TextInput
-          style={styles.input}
+
+        <DefInput
           value={name}
           placeholder="Name..."
-          placeholderTextColor={global.secondaryColor}
-          onChangeText={(e) => setName(e)}
+          onChange={(e) => setName(e)}
         />
-        <TouchableHighlight onPress={() => handleClick()}>
-          <Image source={require("./assets/arrowRight.png")} />
+
+        <TouchableHighlight
+          style={styles.nextIcon}
+          onPress={() => handleClick()}
+        >
+          <LottieView
+            style={{
+              width: 50,
+              height: 50,
+
+              backgroundColor: "#101010",
+            }}
+            source={require("./assets/right_arrow")}
+            loop
+            autoPlay
+          />
         </TouchableHighlight>
         {error && <Text style={{ color: "red" }}>Please enter a name.</Text>}
       </View>
@@ -76,14 +91,14 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     alignItems: "center",
-    paddingTop: "59%",
+    justifyContent: "center",
     height: "100%",
     backgroundColor: global.primaryColor,
   },
   textHeader: {
     color: global.secondaryColor,
     fontSize: 48,
-    marginBottom: "25%",
+    marginBottom: "15%",
   },
   input: {
     width: "75%",
@@ -95,5 +110,11 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1,
     borderColor: global.secondaryColor,
+  },
+  nextIcon: {
+    position: "absolute",
+    bottom: "10%",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 });
