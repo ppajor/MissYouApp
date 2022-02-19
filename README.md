@@ -23,3 +23,7 @@ Ignore the first step on 'Mobile setup' instructions given below if you already 
 
 ### Screenshots
 
+[![main-screen.jpg](https://i.postimg.cc/3Nj9ms7P/main-screen.jpg)](https://postimg.cc/q6R8dZNL)
+[![1645285890838.jpg](https://i.postimg.cc/Wp7Mm60L/1645285890838.jpg)](https://postimg.cc/14fnsFWJ)
+<br /> <br />
+[![humour.jpg](https://i.postimg.cc/cCGXKxqR/humour.jpg)](https://postimg.cc/62zdgNpq)
