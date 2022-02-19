@@ -1,4 +1,5 @@
 # MissYouApp
+Application for android platform made for lovers living far away from each other. Main functionality is to attach partner nickname to an account and use this information to send notifications clicking big red heart on main screen or emoji in Humour Detector to partner's phone.
 
 ### Used Technologies
 * React Native
